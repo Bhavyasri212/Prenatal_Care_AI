@@ -35,19 +35,8 @@ Dynamic generation of wellness plans including:
 
 ## �️ System Architecture
 
-```mermaid
-graph TD
-    A[Patient Input] --> B[Clinical Vitals]
-    A --> C[Ultrasound Upload]
-    B --> D[Multimodal Model]
-    C --> D
-    D --> E[Risk Level Prediction]
-    D --> F[Fetal Weight Estimation]
-    E --> G[Google Gemini API]
-    F --> G
-    G --> H[Empathetic Narrative Summary]
-    G --> I[Personalized Wellness Plan]
-```
+![ARCHHHHHHH](https://github.com/user-attachments/assets/0ab520c2-be27-4202-85b0-8ae54334b120)
+
 
 ---
 
