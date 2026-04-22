@@ -36,7 +36,7 @@ class AssessmentBase(BaseModel):
     patient_id: str
     vitals: Vitals
     prediction: Prediction
-    fetal_weight: float
+    fetal_weight: Optional[float] = None
     findings: Optional[List[ClinicalFinding]] = None
     recommendations: Optional[List[str]] = None
     what_if_suggestions: Optional[List[str]] = None

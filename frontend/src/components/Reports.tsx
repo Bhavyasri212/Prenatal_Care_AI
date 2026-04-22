@@ -28,11 +28,11 @@ interface Assessment {
     risk_level: 'LOW' | 'MID' | 'HIGH';
     confidence: number;
   };
-  fetal_weight: number;
+  fetal_weight: number | null;
   // Synthetic fields for charts
   systolic: number;
   diastolic: number;
-  weight: number;
+  weight: number | null;
   blood_sugar: number;
   heart_rate: number;
   risk: 'LOW' | 'MID' | 'HIGH';
@@ -116,7 +116,7 @@ function AssessmentDetailModal({ assessment, onClose }: ModalProps) {
                   <TrendingUp className="text-primary" size={24} />
                 </div>
                 <div className="text-5xl font-black text-clinical-900 mb-2">
-                  {assessment.fetal_weight.toLocaleString()}g
+                  {assessment.fetal_weight !== null ? assessment.fetal_weight.toLocaleString() : "—"}g
                 </div>
                 <p className="text-clinical-600 font-medium text-sm">
                   Clinical estimate based on multi-modal ultrasound and vitals integration.
@@ -449,7 +449,9 @@ export function Reports() {
                               {row.risk === 'LOW' ? '✅ Low' : row.risk === 'MID' ? '⚠️ Elevated' : '🚨 High'}
                             </span>
                           </td>
-                          <td className="p-4 text-sm text-clinical-600 font-medium">{row.weight.toLocaleString()}g</td>
+                          <td className="p-4 text-sm text-clinical-600 font-medium">
+                            {row.weight !== null ? `${row.weight.toLocaleString()}g` : "—"}
+                          </td>
                           <td className="p-4 text-sm font-medium">
                             <span className={row.systolic > 120 ? 'text-warning font-bold' : 'text-success font-bold'}>
                               {row.systolic}

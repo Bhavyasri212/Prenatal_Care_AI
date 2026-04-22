@@ -77,7 +77,8 @@ async def generate_clinical_reasoning(vitals: Dict[str, float], risk_level: str)
 
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        # Using gemini-3.1-flash-lite-preview for 500 RPD quota
+        model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
         
         prompt = f"""
         Analyze the following prenatal health assessment results and provide clinical reasoning for the patient.

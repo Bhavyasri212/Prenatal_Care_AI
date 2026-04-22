@@ -57,8 +57,8 @@ async def generate_wellness_plan(vitals: Dict[str, float], risk_level: str) -> D
 
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash') # User used 2.5 but 1.5 or 2.0 is more common/available usually, but I'll stick to 1.5-flash for speed as I used before, or 2.0-flash if they prefer. Let's use 1.5-flash/2.0-flash as reliable. Actually user edited to 2.5-flash in reasoning.py? Wait, did they? 
-        # Actually user edited reasoning.py to gemini-2.5-flash. I should probably use that if it exists for them.
+        # Using gemini-3.1-flash-lite-preview for 500 RPD quota
+        model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
         
         prompt = f"""
         Create a personalized Prenatal Nutrition and Wellness Plan for a patient.

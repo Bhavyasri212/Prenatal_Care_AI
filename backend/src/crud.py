@@ -10,7 +10,7 @@ def assessment_helper(assessment) -> dict:
         "timestamp": assessment["timestamp"],
         "vitals": assessment["vitals"],
         "prediction": assessment["prediction"],
-        "fetal_weight": assessment["fetal_weight"]
+        "fetal_weight": assessment.get("fetal_weight")
     }
 
 async def get_patient(patient_id: str):
