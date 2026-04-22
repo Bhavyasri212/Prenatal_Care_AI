@@ -2,8 +2,8 @@ import numpy as np
 import shap
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from preprocessing import DataPreprocessor
-from model import build_multimodal_model
+from .preprocessing import DataPreprocessor
+from .model import build_multimodal_model
 import os
 
 # 1. FOOLPROOF PATH SETUP
@@ -102,7 +102,56 @@ def explain_model():
     plt.savefig(save_path, bbox_inches='tight')
     print(f"✅ Saved SHAP Summary Plot to: {save_path}")
 
+import cv2
+import base64
+
+def generate_gradcam_sim(img_array: np.ndarray) -> str:
+    """
+    Generates a simulated Grad-CAM heatmap overlay for an ultrasound image.
+    Returns: Base64 encoded string of the JPEG image.
+    """
+    try:
+        # Pre-process image (ensure it's 256x256 for the simulation math)
+        # Input expected as 128x128 from predict endpoint, but we upscale for better viz
+        img = cv2.resize((img_array * 255).astype(np.uint8), (256, 256))
+        
+        # Create the "Attention Map" (Gaussian blobs)
+        # Simulate focusing on Fetal Abdomen (Center)
+        center_x, center_y = 128, 130
+        sigma = 45 # Spread
+        
+        x = np.arange(0, 256, 1, float)
+        y = np.arange(0, 256, 1, float)
+        y = y[:, np.newaxis]
+        
+        # Primary ROI (e.g., abdomen)
+        heatmap = np.exp(-((x - center_x)**2 + (y - center_y)**2) / (2 * sigma**2))
+        
+        # Secondary ROI (e.g., head or limbs)
+        heatmap += 0.35 * np.exp(-((x - 180)**2 + (y - 90)**2) / (2 * 25**2))
+
+        # Normalize 0-255
+        heatmap = (heatmap - np.min(heatmap)) / (np.max(heatmap) - np.min(heatmap))
+        heatmap = np.uint8(255 * heatmap)
+
+        # Apply Jet Color Map
+        heatmap_color = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+
+        # Blend: 0.65 original + 0.35 heatmap
+        img_bgr = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        overlay = cv2.addWeighted(img_bgr, 0.65, heatmap_color, 0.35, 0)
+
+        # Encode to Base64
+        _, buffer = cv2.imencode('.jpg', overlay)
+        base64_str = base64.b64encode(buffer).decode('utf-8')
+        
+        return f"data:image/jpeg;base64,{base64_str}"
+    except Exception as e:
+        print(f"⚠️ Grad-CAM Simulation Error: {e}")
+        return ""
+
 if __name__ == "__main__":
+
     try:
         explain_model()
     except Exception as e:

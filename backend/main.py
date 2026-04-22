@@ -25,6 +25,7 @@ from src.model import build_multimodal_model
 from src.preprocessing import DataPreprocessor
 from src.reasoning import generate_clinical_reasoning
 from src.wellness import generate_wellness_plan
+from src.explainability import generate_gradcam_sim
 
 # Import Database operations
 from src import schemas, crud
@@ -264,6 +265,11 @@ async def predict_risk(
         risk_probs = preds[0][0].tolist() # [Low, Mid, High]
         weight_pred = float(preds[1][0][0]) if fetal_weight_available else None
         
+        # 3.5 Generate Grad-CAM Visualization if image is available
+        gradcam_img = None
+        if fetal_weight_available:
+            gradcam_img = generate_gradcam_sim(input_img[0][:,:,0])
+        
         idx_max = np.argmax(risk_probs)
         risk_levels = ['LOW', 'MID', 'HIGH']
         final_risk = risk_levels[idx_max]
@@ -283,7 +289,8 @@ async def predict_risk(
                 "risk_level": final_risk,
                 "confidence": float(np.max(risk_probs))
             },
-            "fetal_weight": weight_pred
+            "fetal_weight": weight_pred,
+            "gradcam_image": gradcam_img
         }
         
         # 4. Generate AI Reasoning (via Gemini or Fallback)
@@ -307,6 +314,7 @@ async def predict_risk(
             "final_risk": final_risk,
             "fetal_weight_available": fetal_weight_available,
             "estimated_weight_g": weight_pred,
+            "gradcam_image": gradcam_img,
             "reasoning": reasoning,
             "wellness_plan": wellness_plan
         }

@@ -42,6 +42,7 @@ class AssessmentBase(BaseModel):
     what_if_suggestions: Optional[List[str]] = None
     patient_advice: Optional[PatientAdvice] = None
     wellness_plan: Optional[WellnessPlan] = None
+    gradcam_image: Optional[str] = None
 
 class AssessmentCreate(AssessmentBase):
     pass

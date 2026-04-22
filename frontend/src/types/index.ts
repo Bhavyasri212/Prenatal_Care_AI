@@ -63,5 +63,6 @@ export interface VitalSigns {
       sensors: number;
       ultrasound: number;
     };
+    gradcamImage?: string;
   }
   

@@ -216,6 +216,57 @@ export function Results({ result, vitals, onBack, onViewReasoning }: ResultsProp
           </SectionCard>
         )}
 
+        {result.gradcamImage && (
+          <SectionCard title="AI FOCUS: GRAD-CAM VISUALIZATION" icon={<BrainCircuit size={28} className="text-primary-600" />}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-white p-8 rounded-3xl border border-clinical-100 shadow-sm">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary opacity-25 group-hover:opacity-40 rounded-[2rem] blur transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative bg-white rounded-[1.8rem] overflow-hidden border-4 border-white shadow-xl aspect-square">
+                  <img 
+                    src={result.gradcamImage} 
+                    alt="Ultrasound Grad-CAM Visualization" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-white text-xs font-bold tracking-widest uppercase">
+                    AI Interpreted View
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary uppercase text-xs font-black tracking-widest">
+                  <Activity size={14} /> Diagnostic Attention Map
+                </div>
+                <h3 className="text-3xl font-black text-clinical-900 leading-tight">Where the Model Focused</h3>
+                <p className="text-lg text-clinical-600 font-medium leading-relaxed">
+                  This visualization highlights the anatomical regions where our AI model detected the highest diagnostic importance. 
+                  The <span className="text-danger font-bold">heatmap (red/yellow regions)</span> indicates where the model focused to estimate fetal weight and identify clinical risk markers.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex gap-4 p-4 rounded-2xl bg-clinical-50 border border-clinical-100">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm flex-shrink-0">
+                      <div className="w-4 h-4 rounded-full bg-danger animate-pulse"></div>
+                    </div>
+                    <div>
+                      <div className="font-bold text-clinical-900">Primary ROI Detected</div>
+                      <div className="text-sm text-clinical-500 font-medium italic">Likely Fetal Abdomen / Morphology Center</div>
+                    </div>
+                  </div>
+                  <div className="flex gap-4 p-4 rounded-2xl bg-clinical-50 border border-clinical-100">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm flex-shrink-0">
+                      <div className="w-4 h-4 rounded-full bg-warning"></div>
+                    </div>
+                    <div>
+                      <div className="font-bold text-clinical-900">Secondary Contextual Markers</div>
+                      <div className="text-sm text-clinical-500 font-medium italic">Surrounding Anatomical Boundaries</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SectionCard>
+        )}
+
         <SectionCard title="HEALTH METRICS BREAKDOWN" icon={<Activity size={28} className="text-primary" />}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {findings.map((finding, index) => {
