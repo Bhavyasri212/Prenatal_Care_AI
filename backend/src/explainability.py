@@ -1,6 +1,4 @@
 import numpy as np
-import shap
-import matplotlib.pyplot as plt
 import tensorflow as tf
 from .preprocessing import DataPreprocessor
 from .model import build_multimodal_model
@@ -19,6 +17,8 @@ if not os.path.exists(output_dir):
 print(f"📂 SHAP Plots will be saved to: {output_dir}")
 
 def explain_model():
+    import shap
+    import matplotlib.pyplot as plt
     print("🧠 Initializing Fast SHAP (Optimized)...")
     
     # 1. Load Data
