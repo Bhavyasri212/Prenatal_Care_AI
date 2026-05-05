@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000'; // FastAPI default port
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export const analyzePatient = async (vitals, imageFile) => {
     const formData = new FormData();

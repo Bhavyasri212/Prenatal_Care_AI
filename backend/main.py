@@ -111,7 +111,7 @@ app = FastAPI(lifespan=lifespan, title="Maternal Health ML API")
 # Allow React to communicate with this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["*"], # Change this to your Vercel URL once deployed for better security
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

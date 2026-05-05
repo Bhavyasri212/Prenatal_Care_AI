@@ -191,7 +191,8 @@ export function Reports() {
       
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8000/history', {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${API_URL}/history`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -24,7 +24,8 @@ export const Wellness: React.FC = () => {
   useEffect(() => {
     const fetchWellnessPlan = async () => {
       try {
-        const response = await fetch('http://localhost:8000/wellness-plan', {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${API_URL}/wellness-plan`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -23,7 +23,8 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup }) => 
       formData.append('username', email);
       formData.append('password', password);
 
-      const response = await fetch('http://localhost:8000/token', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_URL}/token`, {
         method: 'POST',
         body: formData,
       });
@@ -36,7 +37,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToSignup }) => 
       const { access_token } = await response.json();
       
       // Fetch user data
-      const userResponse = await fetch('http://localhost:8000/users/me', {
+      const userResponse = await fetch(`${API_URL}/users/me`, {
         headers: {
           'Authorization': `Bearer ${access_token}`
         }
